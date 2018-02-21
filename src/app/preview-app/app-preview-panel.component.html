@@ -1,0 +1,26 @@
+<mat-grid-list cols="3" rowHeight="200px">
+    <mat-grid-tile
+        *ngFor="let tile of appPicturesObject">
+        <img src="{{tile.pictureUrl}}" alt="{{tile.title}}">
+        <mat-grid-tile-footer>
+            {{tile.title}}
+        </mat-grid-tile-footer>
+    </mat-grid-tile>
+</mat-grid-list>
+<div class="button-wrapper">
+    <button mat-fab>
+        <mat-icon aria-label="Switch to editor mode">home</mat-icon>
+    </button>
+    <button mat-fab>
+        <mat-icon aria-label="Switch to editor mode">event_name</mat-icon>
+    </button>
+    <button mat-fab>
+        <mat-icon aria-label="Switch to editor mode">settings</mat-icon>
+    </button>
+    <button mat-fab color="primary">
+        <mat-icon aria-label="Switch to editor mode">delete</mat-icon>
+    </button>
+    <button mat-fab color="accent">
+        <mat-icon aria-label="Switch to editor mode">account-plus</mat-icon>
+    </button>
+</div>

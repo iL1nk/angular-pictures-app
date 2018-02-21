@@ -1,0 +1,10 @@
+<mat-toolbar color="primary"> 
+  <mat-toolbar-row>
+    <h1>{{title}}</h1>
+
+    <span class="app-spacer"></span>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<app-preview-panel ng-if="isPreview()"></app-preview-panel>
+<!-- <editor-app ng-if="!isPreview()"></editor-app> -->
