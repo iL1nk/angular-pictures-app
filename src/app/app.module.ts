@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
+// import { HttpClientModule } from '@angular/common/http';
 // import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
@@ -15,12 +16,15 @@ import { MatButtonModule,
 import {MatGridListModule} from '@angular/material/grid-list';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { GetPicturesService } from './get-pictures.service';
 import { AppPreviewPanelComponent } from './preview-app/app-preview-panel.component';
+import { EditorAppComponent } from './editor-app/editor-app.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AppPreviewPanelComponent,
+    EditorAppComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,9 +39,9 @@ import { AppPreviewPanelComponent } from './preview-app/app-preview-panel.compon
     MatProgressSpinnerModule,
     MatToolbarModule,
     // FormsModule,
-    HttpClientModule,
+    HttpModule,
   ],
-  providers: [],
+  providers: [GetPicturesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

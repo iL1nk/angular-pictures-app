@@ -1,10 +1,10 @@
 <mat-toolbar color="primary"> 
   <mat-toolbar-row>
-    <h1>{{title}}</h1>
+    <h1>{{title}} | {{panelType}}</h1>
 
     <span class="app-spacer"></span>
   </mat-toolbar-row>
 </mat-toolbar>
 
-<app-preview-panel ng-if="isPreview()"></app-preview-panel>
-<!-- <editor-app ng-if="!isPreview()"></editor-app> -->
+<app-preview-panel *ngIf="isPreview()" (switchMode)="switchPanelTypeToEditor()"></app-preview-panel>
+<app-editor-mode *ngIf="!isPreview()" (switchPreview)="switchPanelTypeToPreview()"></app-editor-mode>

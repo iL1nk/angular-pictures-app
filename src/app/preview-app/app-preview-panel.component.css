@@ -1,0 +1,14 @@
+.button-wrapper {
+	position: fixed;
+	right: 30px;
+	top: 5%;
+	width: 60px;
+}
+
+app-preview-panel {
+	position: relative;
+}
+
+.button-wrapper button {
+	margin-top:  .5rem;
+}

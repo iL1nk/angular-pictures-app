@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -10,12 +10,20 @@ export class AppComponent implements OnInit {
   title: string;
   panelType: string;
 
-  ngOnInit() {
-    this.title = 'Picture Grid Application';
+  private isPreview(): boolean {
+    return this.panelType === 'preview';
+  }
+
+  private switchPanelTypeToEditor(): void {
+    this.panelType = 'editor';
+  }
+
+  private switchPanelTypeToPreview(): void {
     this.panelType = 'preview';
   }
 
-  private isPreview(): boolean {
-    return this.panelType === 'preview';
+  ngOnInit() {
+    this.title = 'Picture Grid Application';
+    this.panelType = 'preview';
   }
 }
