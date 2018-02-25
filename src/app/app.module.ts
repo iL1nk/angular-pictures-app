@@ -1,10 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
-// import { HttpClientModule } from '@angular/common/http';
-// import { FormsModule } from '@angular/forms';
-
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
+
 import { MatButtonModule,
   MatFormFieldModule,
   MatCardModule,
@@ -38,7 +38,8 @@ import { EditorAppComponent } from './editor-app/editor-app.component';
     MatTabsModule,
     MatProgressSpinnerModule,
     MatToolbarModule,
-    // FormsModule,
+    FormsModule,
+    ReactiveFormsModule,
     HttpModule,
   ],
   providers: [GetPicturesService],

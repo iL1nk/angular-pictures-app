@@ -1,28 +1,29 @@
 <div class="card-flex">
-  <div class="example-card" 
-    (click)="editCurrentItem($index)"
-    *ngFor="let card of picturesList">
-      <img mat-card-image src="{{card.pictureUrl}}" alt="{{card.title}}">
+  <div class="example-card"
+    *ngFor="let card of picturesList; index as i;">
+      <img mat-card-image src="{{card.pictureUrl}}" alt="{{card.title}}" (click)="editCurrentItem(i)">
       <div class="content">
         <p>
           {{card.title}}
         </p>
-        <form class="example-form" *ngIf="isEdit($index)">
-            <mat-form-field class="example-full-width">
-              <input type="url" matInput placeholder="Url address">
-            </mat-form-field>              
-              <!-- <input matInput placeholder="Url address" [formControl]="urlFormControl">
+        <form class="example-form" *ngIf="isEdit(i)" #tempPictureObj>
+            <mat-form-field>
+              <input name="pictureUrl" matInput class="example-full-width" placeholder="Url address"
+                     [formControl]="urlFormControl"
+                     (input)="tempPictureObj.picturesUrl = $event.target.value">
               <mat-error *ngIf="urlFormControl.hasError('url') && !urlFormControl.hasError('required')">
                 Please enter a valid url address
               </mat-error>
-              <mat-error *ngIf="urlFormControl.hasError('required')">
-                URL is <strong>required</strong>
-              </mat-error> -->
+              <!--<mat-error *ngIf="urlFormControl.hasError('required')">-->
+                <!--URL is <strong>required</strong>-->
+              <!--</mat-error>-->
+            </mat-form-field>
             <mat-form-field class="example-full-width">
-              <input matInput #message maxlength="42" placeholder="Tooltip">
+              <input name="tooltip" matInput #message maxlength="42" placeholder="Tooltip"
+                     (input)="tempPictureObj.tooltip = $event.target.value">
               <mat-hint align="end">{{message.value.length}} / 42</mat-hint>
             </mat-form-field>
-          </form>
+        </form>
       </div>
     </div>
 </div>
@@ -31,14 +32,15 @@
     <button mat-fab color="primary">
         <mat-icon aria-label="Switch to preview mode" (click)="switchToPreviewMode()">home</mat-icon>
     </button>
-
-    <button mat-fab>
-        <mat-icon aria-label="Save element">event_name</mat-icon>
-    </button>
-    <button mat-fab>
-        <mat-icon aria-label="Delete element">delete</mat-icon>
-    </button>
     <button mat-fab>
         <mat-icon aria-label="Add element">account-plus</mat-icon>
     </button>
+    <div class="manage-buttons" *ngIf="chosenItem">
+      <button mat-fab>
+          <mat-icon aria-label="Save element" (click)="saveCurrentItemChanges(tempPictureObj)">event_name</mat-icon>
+      </button>
+      <button mat-fab>
+          <mat-icon aria-label="Delete element">delete</mat-icon>
+      </button>
+    </div>
   </div>
