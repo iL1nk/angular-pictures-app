@@ -1,7 +1,6 @@
-import { Component, OnInit, Output, EventEmitter, NgModule } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, NgModule, Input } from '@angular/core';
 import { GetPicturesService } from '../get-pictures.service';
 import {FormControl, Validators} from '@angular/forms';
-// import {ErrorStateMatc9her} from '@angular/material/core';
 
 @Component({
   selector: 'app-editor-mode',
@@ -12,10 +11,15 @@ import {FormControl, Validators} from '@angular/forms';
 export class EditorAppComponent implements OnInit {
   picturesList: Array<object>;
   tempPictureObj: {
-    picturesUrl: string,
-    tooltip: string;
+    pictureUrl: string,
+    title: string,
+  } = {
+    pictureUrl: '',
+    title: '',
   };
+
   chosenItem: number;
+  isAddNewItemOpen: boolean;
 
   urlFormControl = new FormControl('', [
     Validators.required,
@@ -23,6 +27,10 @@ export class EditorAppComponent implements OnInit {
   ]);
 
   @Output() switchPreview = new EventEmitter();
+
+  closeAddNewWindow(message: boolean): void {
+    this.isAddNewItemOpen = message;
+  }
 
   private switchToPreviewMode(): void {
     this.switchPreview.emit();
@@ -40,20 +48,45 @@ export class EditorAppComponent implements OnInit {
     this.chosenItem = null;
   }
 
-  private saveCurrentItemChanges(tempPictureObj): void {
-    const index = this.chosenItem,
-      pictureObj = this.picturesList[index];
+  saveValue($target) {
+    const valueInput = $target.value,
+      inputName = $target.name;
 
-    if (this.checkIfNotEmpty(tempPictureObj)) {
-      pictureObj.picturesUrl = tempPictureObj.picturesUrl;
-      pictureObj.tooltip = tempPictureObj.tooltip;
+    if (valueInput.length) {
+      if (inputName === 'pictureUrlInput') {
+        this.tempPictureObj.pictureUrl = valueInput;
+      } else {
+        this.tempPictureObj.title = valueInput;
+      }
+    }
+  }
+
+  saveCurrentItemChanges(): void {
+    const index = this.chosenItem;
+    let picturesListItem = {};
+    picturesListItem = this.picturesList[index];
+
+    if (this.checkIfNotEmpty(this.tempPictureObj)) {
+      picturesListItem.pictureUrl = this.tempPictureObj.pictureUrl;
+      picturesListItem.title = this.tempPictureObj.title;
     }
   }
 
   private checkIfNotEmpty(object): boolean {
-    Object.keys(object).every(item => {
-      return typeof object[item] !== 'undefined';
+    return Object.keys(object).every(item => {
+      return (typeof object[item] !== 'undefined') && (object[item].length);
     });
+  }
+
+  private deleteSelectedItem(): void {
+    const index = this.chosenItem;
+    if ((typeof index !== 'undefined') && (index !== null)) {
+      this.picturesList.splice(index, 1);
+    }
+  }
+
+  private addNewItem() {
+    this.isAddNewItemOpen = true;
   }
 
   constructor(private getPicService: GetPicturesService) { }
@@ -67,6 +100,7 @@ export class EditorAppComponent implements OnInit {
 
   ngOnInit() {
     this.getImages();
+    this.isAddNewItemOpen = false;
   }
 
 }

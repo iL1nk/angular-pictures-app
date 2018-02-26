@@ -19,12 +19,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GetPicturesService } from './get-pictures.service';
 import { AppPreviewPanelComponent } from './preview-app/app-preview-panel.component';
 import { EditorAppComponent } from './editor-app/editor-app.component';
+import { AppAddnewitemComponent } from './app-addnewitem/app-addnewitem.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AppPreviewPanelComponent,
     EditorAppComponent,
+    AppAddnewitemComponent,
   ],
   imports: [
     BrowserModule,
