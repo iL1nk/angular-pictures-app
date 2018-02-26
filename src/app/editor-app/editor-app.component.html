@@ -7,7 +7,7 @@
     *ngFor="let card of picturesList; index as i;">
       <img mat-card-image src="{{card.pictureUrl}}" alt="{{card.title}}" (click)="editCurrentItem(i)">
       <div class="content">
-        <p>
+        <p (mousedown)="editCurrentItem(i)">
           {{card.title}}
         </p>
         <form class="example-form" *ngIf="isEdit(i)" #tempPictureObj>
@@ -35,18 +35,18 @@
 </div>
 
 <div class="button-wrapper">
-    <button mat-fab color="primary">
-        <mat-icon aria-label="Switch to preview mode" (click)="switchToPreviewMode()">home</mat-icon>
+    <button mat-fab color="primary" (click)="switchToPreviewMode()">
+        <mat-icon aria-label="Switch to preview mode">home</mat-icon>
     </button>
-    <button mat-fab>
-        <mat-icon aria-label="Add element" (click)="addNewItem()">add</mat-icon>
+    <button mat-fab (click)="addNewItem()">
+        <mat-icon aria-label="Add element">add</mat-icon>
     </button>
     <div class="manage-buttons" *ngIf="(chosenItem + 1)">
-      <button mat-fab>
-          <mat-icon aria-label="Save element" (click)="saveCurrentItemChanges()">save</mat-icon>
+      <button mat-fab (click)="saveCurrentItemChanges()">
+          <mat-icon aria-label="Save element">save</mat-icon>
       </button>
-      <button mat-fab>
-          <mat-icon aria-label="Delete element" (click)="deleteSelectedItem()">delete</mat-icon>
+      <button mat-fab (click)="deleteSelectedItem()">
+          <mat-icon aria-label="Delete element">delete</mat-icon>
       </button>
     </div>
   </div>

@@ -48,7 +48,7 @@ export class EditorAppComponent implements OnInit {
     this.chosenItem = null;
   }
 
-  saveValue($target) {
+  private saveValue($target) {
     const valueInput = $target.value,
       inputName = $target.name;
 
@@ -63,12 +63,14 @@ export class EditorAppComponent implements OnInit {
 
   saveCurrentItemChanges(): void {
     const index = this.chosenItem;
-    let picturesListItem = {};
+    let picturesListItem: any;
     picturesListItem = this.picturesList[index];
 
     if (this.checkIfNotEmpty(this.tempPictureObj)) {
       picturesListItem.pictureUrl = this.tempPictureObj.pictureUrl;
       picturesListItem.title = this.tempPictureObj.title;
+
+      this.resetItem();
     }
   }
 
