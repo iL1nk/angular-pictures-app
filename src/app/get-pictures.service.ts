@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class GetPicturesService {
+  /*
   appPicturesObject = [{
       pictureUrl: 'https://c1.staticflickr.com/6/5611/15637859470_280a05c0cd_c.jpg',
       title: 'Picture 1',
@@ -51,8 +52,15 @@ export class GetPicturesService {
       id: 9,
     },
   ];
+  */
+
+  configUrl = 'assets/pictures-config.json';
 
   constructor(private http: Http) { }
+
+  getPictureList() {
+    return this.http.get(this.configUrl);
+  }
 
   private extractListData(res: Response) {
     const body = res.json();
@@ -70,10 +78,6 @@ export class GetPicturesService {
 
   getPicture (pictureURL: string) {
     return this.http.get(pictureURL).map(this.extractItemData);
-  }
-
-  getPictureList () {
-    return this.appPicturesObject;
   }
 
 }

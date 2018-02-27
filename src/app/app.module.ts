@@ -30,6 +30,7 @@ import { AppAddnewitemComponent } from './app-addnewitem/app-addnewitem.componen
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     BrowserAnimationsModule,
     MatGridListModule,
     MatButtonModule,
@@ -42,7 +43,6 @@ import { AppAddnewitemComponent } from './app-addnewitem/app-addnewitem.componen
     MatToolbarModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
   ],
   providers: [GetPicturesService],
   bootstrap: [AppComponent]
