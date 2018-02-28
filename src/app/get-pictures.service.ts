@@ -29,8 +29,19 @@ export class GetPicturesService {
   ) {  }
 
   deletePicture (id: number): Observable<{}> {
-    const url = `${this.configUrl}/${id}`;
-    return this.http.delete(url)
+    // const url = `${this.configUrl}/${id}`;
+    // return this.http.delete(url)
+    //   .pipe(
+    //     catchError(this.handleError)
+    //   );
+    return this.http.post(this.configUrl, id)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  updatePicture (pictureItem: PictureList): Observable<PictureList> {
+    return this.http.post(this.configUrl, pictureItem)
       .pipe(
         catchError(this.handleError)
       );
@@ -58,11 +69,9 @@ export class GetPicturesService {
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
+
       console.error('An error occurred:', error.error.message);
     } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
       console.error(
         `Backend returned code ${error.status}, ` +
         `body was: ${error.error}`);

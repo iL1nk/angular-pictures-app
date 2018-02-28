@@ -14,9 +14,11 @@ export class EditorAppComponent implements OnInit {
   tempPictureObj: {
     pictureUrl: string,
     title: string,
+    id: number
   } = {
     pictureUrl: '',
     title: '',
+    id: 0,
   };
   error: any;
 
@@ -66,12 +68,23 @@ export class EditorAppComponent implements OnInit {
   saveCurrentItemChanges(): void {
     const index = this.chosenItem;
     const pictureListItem = this.pictureList[index];
-
     if (this.checkIfNotEmpty(this.tempPictureObj)) {
+
+      /*
       pictureListItem.pictureUrl = this.tempPictureObj.pictureUrl;
       pictureListItem.title = this.tempPictureObj.title;
+      */
 
-      this.resetItem();
+    this.getPicService.updatePicture(this.tempPictureObj)
+      .subscribe(pictureItem => {
+        const ix = pictureItem ? this.pictureList.findIndex(pic => pic.id === pic.id) : -1;
+        if (ix > -1) {
+          this.pictureList[ix] = pictureItem;
+        }
+      });
+
+    this.resetItem();
+    this.tempPictureObj = undefined;
     }
   }
 
@@ -82,10 +95,11 @@ export class EditorAppComponent implements OnInit {
   }
 
   private deleteSelectedItem(): void {
-    // this.getPicService.deletePicture(this.pictureList[this.chosenItem].id).subscribe();
     const index = this.chosenItem;
     if ((typeof index !== 'undefined') && (index !== null)) {
-      this.pictureList.splice(index, 1);
+      // this.pictureList.splice(index, 1);
+
+      this.getPicService.deletePicture(index).subscribe();
     }
   }
 
