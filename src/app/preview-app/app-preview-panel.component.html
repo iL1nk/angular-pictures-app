@@ -1,6 +1,6 @@
 <mat-grid-list cols="3" rowHeight="200px">
     <mat-grid-tile
-        *ngFor="let tile of pictureList"><!-- | async - pipe should be used for promise response -->
+        *ngFor="let tile of pictureList | async"><!-- | async - pipe should be used for promise response -->
         <img src="{{tile.pictureUrl}}" alt="{{tile.title}}">
         <mat-grid-tile-footer>
             {{tile.title}}
