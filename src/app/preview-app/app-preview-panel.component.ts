@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { GetPicturesService } from '../get-pictures.service';
+import { PictureList } from '../picture-list-interface';
 
 @Component({
   selector: 'app-preview-panel',
@@ -8,11 +9,8 @@ import { GetPicturesService } from '../get-pictures.service';
 })
 
 export class AppPreviewPanelComponent implements OnInit {
-  pictureList: Array<object> = [{
-    pictureUrl: '',
-    title: '',
-    id: 0,
-  }];
+  pictureList: PictureList[];
+  error: any;
 
   @Output() switchMode = new EventEmitter();
 
@@ -23,10 +21,11 @@ export class AppPreviewPanelComponent implements OnInit {
   constructor(private getPicService: GetPicturesService) { }
 
   private getImages() {
-    // this.getPicService.getPictureList.subscribe(data => {
-    //   this.pictureList = data;
-    // })
-    this.pictureList = this.getPicService.getPictureList();
+    this.getPicService.getPictureList()
+      .subscribe(
+        data => { this.pictureList = data; },
+        error => { this.error = error; }
+        );
   }
 
   ngOnInit() {

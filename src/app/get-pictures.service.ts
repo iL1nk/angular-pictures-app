@@ -1,83 +1,74 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
+import { HttpErrorResponse } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
+
 import { Observable } from 'rxjs/Observable';
+import {ErrorObservable} from 'rxjs/observable/ErrorObservable';
+import { catchError } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
+
+import { PictureList } from './picture-list-interface';
 
 @Injectable()
 export class GetPicturesService {
-  /*
-  appPicturesObject = [{
-      pictureUrl: 'https://c1.staticflickr.com/6/5611/15637859470_280a05c0cd_c.jpg',
-      title: 'Picture 1',
-      id: 1,
-    },
-    {
-      pictureUrl: 'https://c1.staticflickr.com/6/5115/7393080644_bfc0e76154_b.jpg',
-      title: 'Picture 2',
-      id: 2,
-    },
-    {
-      pictureUrl: 'https://c1.staticflickr.com/1/539/18494876499_011764713f_c.jpg',
-      title: 'Picture 3',
-      id: 3,
-    },
-    {
-      pictureUrl: 'https://c1.staticflickr.com/3/2945/15174753880_6e47e7e4db_b.jpg',
-      title: 'Picture 4',
-      id: 4,
-    },
-    {
-      pictureUrl: 'https://c1.staticflickr.com/9/8399/15620231427_de87e02a90_c.jpg',
-      title: 'Picture 5',
-      id: 5,
-    },
-    {
-      pictureUrl: 'https://c1.staticflickr.com/4/3927/15414264002_76e338c6f2_h.jpg',
-      title: 'Picture 6',
-      id: 6,
-    },
-    {
-      pictureUrl: 'https://c1.staticflickr.com/1/284/18936300468_3f0e084e51_b.jpg',
-      title: 'Picture 7',
-      id: 7,
-    },
-    {
-      pictureUrl: 'https://c1.staticflickr.com/8/7185/6779983912_f98258c0bc_b.jpg',
-      title: 'Picture 8',
-      id: 8,
-    },
-    {
-      pictureUrl: 'https://c1.staticflickr.com/8/7700/27804662036_f6f072cc16_b.jpg',
-      title: 'Picture 9',
-      id: 9,
-    },
-  ];
-  */
 
   configUrl = 'assets/pictures-config.json';
 
-  constructor(private http: Http) { }
+  /*
+  const httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': 'my-auth-token'
+    })
+  };
+  */
 
-  getPictureList() {
-    return this.http.get(this.configUrl);
+  constructor(
+    private http: Http,
+  ) {  }
+
+  deletePicture (id: number): Observable<{}> {
+    const url = `${this.configUrl}/${id}`;
+    return this.http.delete(url)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  savePicture (pictureItem: PictureList): Observable<PictureList> {
+    return this.http.post(this.configUrl, pictureItem)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  getPictureList (): Observable<PictureList[]> {
+    return this.http.get(this.configUrl)
+      .pipe(
+        catchError(this.handleError)
+      )
+      .map(this.extractListData);
   }
 
   private extractListData(res: Response) {
     const body = res.json();
-    return body.Search || {};
+    return body || [];
   }
 
-  private extractItemData(res: Response) {
-    const body = res.json();
-    return body || {};
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error.message);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong,
+      console.error(
+        `Backend returned code ${error.status}, ` +
+        `body was: ${error.error}`);
+    }
+    // return an ErrorObservable with a user-facing error message
+    return new ErrorObservable(
+      'Something bad happened; please try again later.');
   }
-
-  getPictures (searchUrl: string) {
-    return this.http.get(searchUrl).map(this.extractListData);
-  }
-
-  getPicture (pictureURL: string) {
-    return this.http.get(pictureURL).map(this.extractItemData);
-  }
-
 }

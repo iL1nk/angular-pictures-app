@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { GetPicturesService } from '../get-pictures.service';
 import {FormControl, Validators} from '@angular/forms';
+import {PictureList} from '../picture-list-interface';
 
 @Component({
   selector: 'app-addnewitem',
@@ -11,14 +12,17 @@ import {FormControl, Validators} from '@angular/forms';
 export class AppAddnewitemComponent implements OnInit {
   @Output() cancelWindow: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  picturesList: Array<object>;
+  pictureList: PictureList[];
   tempPictureObj: {
     pictureUrl: string,
     title: string,
+    id: number
   } = {
     pictureUrl: '',
     title: '',
+    id: 0,
   };
+  error: any;
 
   urlFormControl = new FormControl('', [
     Validators.required,
@@ -36,14 +40,21 @@ export class AppAddnewitemComponent implements OnInit {
       } else {
         this.tempPictureObj.title = valueInput;
       }
+
+      this.tempPictureObj.id = this.getPictureId();
     }
+  }
+
+  private getPictureId() {
+    return this.pictureList.length + 1;
   }
 
   private saveNewItem() {
     if (this.checkIfNotEmpty(this.tempPictureObj)) {
-      this.picturesList.push({
+      this.pictureList.push({
         pictureUrl: this.tempPictureObj.pictureUrl,
         title: this.tempPictureObj.title,
+        id: this.tempPictureObj.id,
       });
     }
 
@@ -52,7 +63,7 @@ export class AppAddnewitemComponent implements OnInit {
 
   private checkIfNotEmpty(object): boolean {
     return Object.keys(object).every(item => {
-      return (typeof object[item] !== 'undefined') && (object[item].length);
+      return (object[item]) && (typeof object[item] !== 'undefined');
     });
   }
 
@@ -63,11 +74,25 @@ export class AppAddnewitemComponent implements OnInit {
   constructor(private getPicService: GetPicturesService) { }
 
   private getImages() {
-    this.picturesList = this.getPicService.getPictureList();
+    this.getPicService.getPictureList()
+      .subscribe(
+        data => { this.pictureList = data; },
+        error => { this.error = error; }
+      );
+  }
+
+  private saveNewPicture() {
+    if (this.checkIfNotEmpty(this.tempPictureObj)) {
+      this.getPicService.savePicture(this.tempPictureObj)
+        .subscribe(
+          newPicture => this.pictureList.push(newPicture)
+        );
+
+      this.closeLightBox();
+    }
   }
 
   ngOnInit() {
     this.getImages();
   }
-
 }

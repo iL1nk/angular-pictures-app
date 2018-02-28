@@ -4,7 +4,7 @@
 
 <div class="card-flex">
   <div class="example-card"
-    *ngFor="let card of picturesList; index as i;">
+    *ngFor="let card of pictureList; index as i;">
       <img mat-card-image src="{{card.pictureUrl}}" alt="{{card.title}}" (click)="editCurrentItem(i)">
       <div class="content">
         <p (mousedown)="editCurrentItem(i)">
@@ -19,9 +19,6 @@
               <mat-error *ngIf="urlFormControl.hasError('url') && !urlFormControl.hasError('required')">
                 Please enter a valid url address
               </mat-error>
-              <!--<mat-error *ngIf="urlFormControl.hasError('required')">-->
-                <!--URL is <strong>required</strong>-->
-              <!--</mat-error>-->
             </mat-form-field>
             <mat-form-field class="example-full-width">
               <input name="tooltipInput" matInput #message maxlength="42" placeholder="Tooltip" required

@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, NgModule, Input } from '@angular/core';
 import { GetPicturesService } from '../get-pictures.service';
 import {FormControl, Validators} from '@angular/forms';
+import { PictureList } from '../picture-list-interface';
 
 @Component({
   selector: 'app-editor-mode',
@@ -9,7 +10,7 @@ import {FormControl, Validators} from '@angular/forms';
 })
 
 export class EditorAppComponent implements OnInit {
-  picturesList: Array<object>;
+  pictureList: PictureList[];
   tempPictureObj: {
     pictureUrl: string,
     title: string,
@@ -17,6 +18,7 @@ export class EditorAppComponent implements OnInit {
     pictureUrl: '',
     title: '',
   };
+  error: any;
 
   chosenItem: number;
   isAddNewItemOpen: boolean;
@@ -63,12 +65,11 @@ export class EditorAppComponent implements OnInit {
 
   saveCurrentItemChanges(): void {
     const index = this.chosenItem;
-    let picturesListItem: any;
-    picturesListItem = this.picturesList[index];
+    const pictureListItem = this.pictureList[index];
 
     if (this.checkIfNotEmpty(this.tempPictureObj)) {
-      picturesListItem.pictureUrl = this.tempPictureObj.pictureUrl;
-      picturesListItem.title = this.tempPictureObj.title;
+      pictureListItem.pictureUrl = this.tempPictureObj.pictureUrl;
+      pictureListItem.title = this.tempPictureObj.title;
 
       this.resetItem();
     }
@@ -81,9 +82,10 @@ export class EditorAppComponent implements OnInit {
   }
 
   private deleteSelectedItem(): void {
+    // this.getPicService.deletePicture(this.pictureList[this.chosenItem].id).subscribe();
     const index = this.chosenItem;
     if ((typeof index !== 'undefined') && (index !== null)) {
-      this.picturesList.splice(index, 1);
+      this.pictureList.splice(index, 1);
     }
   }
 
@@ -94,10 +96,11 @@ export class EditorAppComponent implements OnInit {
   constructor(private getPicService: GetPicturesService) { }
 
   private getImages() {
-    // this.getPicService.getPictureList.subscribe(data => {
-    //   this.pictureList = data;
-    // })
-    this.picturesList = this.getPicService.getPictureList();
+    this.getPicService.getPictureList()
+      .subscribe(
+        data => { this.pictureList = data; },
+        error => { this.error = error; }
+      );
   }
 
   ngOnInit() {
