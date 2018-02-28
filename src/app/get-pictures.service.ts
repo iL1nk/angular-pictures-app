@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 @Injectable()
 export class GetPicturesService {
-  appPicturesObject = [{
+  configUrl = 'assets/pictures-config.json';
+  appPicturesObject = [
+    {
       pictureUrl: 'https://c1.staticflickr.com/6/5611/15637859470_280a05c0cd_c.jpg',
       title: 'Picture 1',
       id: 1,
@@ -54,18 +55,9 @@ export class GetPicturesService {
 
   constructor(private http: Http) { }
 
-  private extractListData(res: Response) {
-    const body = res.json();
-    return body.Search || {};
-  }
-
   private extractItemData(res: Response) {
     const body = res.json();
     return body || {};
-  }
-
-  getPictures (searchUrl: string) {
-    return this.http.get(searchUrl).map(this.extractListData);
   }
 
   getPicture (pictureURL: string) {

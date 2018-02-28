@@ -11,7 +11,11 @@ import {FormControl, Validators} from '@angular/forms';
 export class AppAddnewitemComponent implements OnInit {
   @Output() cancelWindow: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  picturesList: Array<object>;
+  pictureList: Array<object> = [{
+    pictureUrl: '',
+    title: '',
+    id: 0,
+  }];
   tempPictureObj: {
     pictureUrl: string,
     title: string,
@@ -41,7 +45,7 @@ export class AppAddnewitemComponent implements OnInit {
 
   private saveNewItem() {
     if (this.checkIfNotEmpty(this.tempPictureObj)) {
-      this.picturesList.push({
+      this.pictureList.push({
         pictureUrl: this.tempPictureObj.pictureUrl,
         title: this.tempPictureObj.title,
       });
@@ -63,7 +67,7 @@ export class AppAddnewitemComponent implements OnInit {
   constructor(private getPicService: GetPicturesService) { }
 
   private getImages() {
-    this.picturesList = this.getPicService.getPictureList();
+    this.pictureList = this.getPicService.getPictureList();
   }
 
   ngOnInit() {

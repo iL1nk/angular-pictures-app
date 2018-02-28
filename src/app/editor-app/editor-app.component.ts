@@ -9,7 +9,11 @@ import {FormControl, Validators} from '@angular/forms';
 })
 
 export class EditorAppComponent implements OnInit {
-  picturesList: Array<object>;
+  pictureList: Array<object> = [{
+    pictureUrl: '',
+    title: '',
+    id: 0,
+  }];
   tempPictureObj: {
     pictureUrl: string,
     title: string,
@@ -64,7 +68,7 @@ export class EditorAppComponent implements OnInit {
   saveCurrentItemChanges(): void {
     const index = this.chosenItem;
     let picturesListItem: any;
-    picturesListItem = this.picturesList[index];
+    picturesListItem = this.pictureList[index];
 
     if (this.checkIfNotEmpty(this.tempPictureObj)) {
       picturesListItem.pictureUrl = this.tempPictureObj.pictureUrl;
@@ -83,7 +87,7 @@ export class EditorAppComponent implements OnInit {
   private deleteSelectedItem(): void {
     const index = this.chosenItem;
     if ((typeof index !== 'undefined') && (index !== null)) {
-      this.picturesList.splice(index, 1);
+      this.pictureList.splice(index, 1);
     }
   }
 
@@ -97,7 +101,7 @@ export class EditorAppComponent implements OnInit {
     // this.getPicService.getPictureList.subscribe(data => {
     //   this.pictureList = data;
     // })
-    this.picturesList = this.getPicService.getPictureList();
+    this.pictureList = this.getPicService.getPictureList();
   }
 
   ngOnInit() {
